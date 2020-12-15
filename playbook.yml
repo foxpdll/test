@@ -1,0 +1,41 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install vim
+      apt: name=vim update_cache=yes state=latest
+
+    - name: Install wget
+      apt: name=wget update_cache=yes state=latest
+
+    - name: Install htop
+      apt: name=htop update_cache=yes state=latest
+
+    - name: Install tmux
+      apt: name=tmux update_cache=yes state=latest
+
+    - name: Install apache2
+      apt: name=apache2 update_cache=yes state=latest
+    - name: Change apache port
+      shell: sed -i 's/80/8888/g' /etc/apache2/ports.conf
+    - name: restart apache2
+      shell: /etc/init.d/apache2 restart
+
+    - name: Install nginx
+      apt: name=nginx update_cache=yes state=latest
+
+    - name: Copy php file
+      template:
+        src: "test.php"
+        dest: "/root/test.php"
+
+    - name: Copy phpinst file
+      template:
+        src: "instphp.sh"
+        dest: "/root/instphp.sh"
+
+    - name: Install and reinstall php
+      shell: bash /root/instphp.sh
+
+
+
